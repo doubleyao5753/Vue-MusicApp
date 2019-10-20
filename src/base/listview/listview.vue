@@ -15,7 +15,8 @@
                 <ul>
                     <li class="list-group-item"
                         v-for="list in item.items"
-                        :key="list.id">
+                        :key="list.id"
+                        @click="pickedItem(list)">
                         <img v-lazy="list.avatar"
                              class="avatar">
                         <span class="name">{{list.name}}</span>
@@ -135,6 +136,10 @@ export default {
         },
         scrolling (e) {
             this.scrollY = e.y
+        },
+        // 点击了谁，向外派发一个事件将其传出
+        pickedItem (i) {
+            this.$emit('picked', i)
         }
     },
     watch: {
