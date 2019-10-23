@@ -1,15 +1,57 @@
 <template>
     <transition name="slide">
         <div class="singer-detail">
-            我只是一个子组件，覆盖掉了原来的组件而已
+            <!-- {{songs}} -->
         </div>
     </transition>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { getSingerDetail } from 'api/singer'
+import { ERR_OK } from 'api/config'
+import { newSong } from 'common/js/song'
 export default {
     name: 'SingerDetail',
-
+    created () {
+        this._getSingerDetail()
+    },
+    data () {
+        return {
+            songs: ''
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'singer'
+        ])
+    },
+    methods: {
+        _getSingerDetail () {
+            if (!this.singer.id) {
+                // 处理边界情况
+                this.$router.push('/singer')
+                return
+            }
+            getSingerDetail(this.singer.id).then((res) => {
+                if (res.code === ERR_OK) {
+                    this.songs = this._formatSongs(res.data.list)
+                }
+            })
+        },
+        // ! 重点：格式化歌曲的数据结构
+        _formatSongs (list) {
+            let form = []
+            list.forEach((e) => {
+                // !解构赋值：拿出子对象
+                let { musicData } = e
+                if (musicData.songid && musicData.albummid) {
+                    form.push(newSong(musicData))
+                }
+            })
+            return form
+        }
+    }
 }
 </script>
 

@@ -12,6 +12,7 @@ import ListView from 'base/listview/listview'
 import { getSinger } from 'api/singer.js'
 import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer.js'
+import { mapMutations } from 'vuex'
 
 const HOT_SINGER = '热门歌手'
 const HOT_SINGER_LEN = 10
@@ -36,6 +37,7 @@ export default {
             this.$router.push({
                 path: `/singer/${singer.id}`
             })
+            this.setSinger(singer)
         },
         _getSingerList () {
             getSinger().then((res) => {
@@ -45,7 +47,7 @@ export default {
                 }
             })
         },
-        // !重点：格式化获取到的数据，转换成合适的数据结构
+        // !重点：格式化获取到的歌手数据，转换成合适的数据结构
         _formatSingerList (raw) {
             // 定义全新数据格式
             let all = {
@@ -89,7 +91,10 @@ export default {
                 return a.title.charCodeAt(0) - b.title.charCodeAt(0)
             })
             return hot.concat(letter)
-        }
+        },
+        ...mapMutations({
+            setSinger: 'SET_SINGER'
+        })
     }
 
 }

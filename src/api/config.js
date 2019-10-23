@@ -1,6 +1,6 @@
 // 配置文件：相对稳定的获取数据会用到的常量
 
-export const recommendUrlParams = {
+export const recUrlParams = {
     g_tk: 1928093487,
     inCharset: 'utf-8',
     outCharset: 'utf-8',
@@ -8,7 +8,7 @@ export const recommendUrlParams = {
     format: 'jsonp'
 }
 
-export const recommendJsonpCallback = {
+export const recJsonpCallback = {
     param: 'jsonpCallback'
 }
 

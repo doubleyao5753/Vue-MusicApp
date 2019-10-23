@@ -2,19 +2,19 @@
 import jsonp from 'common/js/jsonp.js'
 import axios from 'axios'
 import {
-    recommendUrlParams,
-    recommendJsonpCallback
+    recUrlParams,
+    recJsonpCallback
 } from './config'
 
 // 轮播图数据的获取：通过jsonp访问的QQ音乐数据
 export function getSlider () {
     const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-    const params = Object.assign({}, recommendUrlParams, {
+    const params = Object.assign({}, recUrlParams, {
         platform: 'h5',
         uin: 0,
         needNewCode: 1
     })
-    return jsonp(url, params, recommendJsonpCallback)
+    return jsonp(url, params, recJsonpCallback)
 }
 
 // 歌单数据的获取：通过本地服务器设置代理欺骗浏览器设置Referer访问的QQ音乐数据

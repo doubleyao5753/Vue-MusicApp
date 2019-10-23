@@ -13,7 +13,6 @@ Vue.use(Router)
 export default new Router({
     routes: [{
         path: '/',
-        // 默认重定向到推荐路由组件
         redirect: '/recommend'
     },
     {
@@ -25,7 +24,6 @@ export default new Router({
         path: '/singer',
         name: 'Singer',
         component: Singer,
-        // 子路由---children
         children: [{
             path: ':id',
             component: SingerDetail

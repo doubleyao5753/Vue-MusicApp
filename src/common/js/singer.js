@@ -1,6 +1,6 @@
 // 歌手组件 模块下部分功能的封装
 
-// 对于重复的一些属性，封装一个类
+// 对于歌手数据重复的一些属性，封装一个类
 export default class Singer {
     constructor ({
         id,
