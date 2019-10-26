@@ -6,17 +6,21 @@
         <keep-alive>
             <router-view />
         </keep-alive>
+        <player></player>
     </div>
 </template>
 
 <script>
 import MHeader from 'components/m-header/m-header'
 import Tab from 'components/tab/tab'
+// Player 播放器在整个全局都可使用，所以应该放在根组件下
+import Player from 'components/player/player'
 export default {
     name: 'App',
     components: {
         MHeader,
-        Tab
+        Tab,
+        Player
     }
 }
 </script>

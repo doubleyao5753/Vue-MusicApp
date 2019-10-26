@@ -21,7 +21,7 @@ export default {
         },
         data: {
             type: Array,
-            default: null
+            default: () => []
         },
         // 扩展
         listenScroll: {

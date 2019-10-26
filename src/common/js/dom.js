@@ -26,3 +26,32 @@ export function customAttr (element, name, value) {
         return element.setAttribute(prefix + name, value)
     }
 }
+
+let elementTest = document.createElement('div')
+let vendor = (function () {
+    let transformNames = {
+        webkit: 'webkitTransform',
+        Moz: 'MozTransform',
+        O: 'OTransform',
+        ms: 'msTransform',
+        standard: 'transform'
+    }
+    for (let key in transformNames) {
+        if (elementTest.style[transformNames[key]] !== undefined) {
+            return key
+        }
+    }
+    return false
+})()
+
+/**
+ * 检测当前浏览器供应商，并传入对应的前缀
+ * @param {String} style
+ */
+export function prefixStyle (style) {
+    if (vendor === false) return false
+
+    if (vendor === 'standard') return style
+
+    return vendor + style.charAt(0).toUpperCase() + style.substring(1)
+}

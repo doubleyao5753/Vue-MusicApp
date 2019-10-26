@@ -2,6 +2,11 @@
     <div class="singer">
         <list-view :singerData='singerList'
                    @picked="pickedSinger"></list-view>
+        <div class="loading-container"
+             v-show="!singerList.length">
+            <loading></loading>
+        </div>
+        <!-- 歌手组件下的子路由出口 singer-detail -->
         <router-view></router-view>
     </div>
 </template>
@@ -13,6 +18,7 @@ import { getSinger } from 'api/singer.js'
 import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer.js'
 import { mapMutations } from 'vuex'
+import Loading from 'base/loading/loading'
 
 const HOT_SINGER = '热门歌手'
 const HOT_SINGER_LEN = 10
@@ -20,7 +26,8 @@ export default {
     name: 'Singer',
     components: {
         ListView,
-        BScroll
+        BScroll,
+        Loading
     },
     data () {
         return {
@@ -108,5 +115,12 @@ export default {
     width: 100%;
     top: 88px;
     bottom: 0;
+
+    .loading-container {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }
 </style>

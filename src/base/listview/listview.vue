@@ -2,8 +2,8 @@
     <scroll class="listview"
             ref="listView"
             :data="singerData"
-            :listenScroll="listenScroll"
-            :probeType="probeType"
+            :listen-scroll="listenScroll"
+            :probe-type="probeType"
             @scroll="scrolling">
         <!-- 歌手列表 -->
         <ul>
