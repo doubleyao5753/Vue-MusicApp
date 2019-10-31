@@ -2,7 +2,8 @@
     <div class="song-list">
         <ul>
             <li class="item"
-                v-for="song in songs"
+                v-for="(song,index) in songs"
+                @click="emitSong(song,index)"
                 :key="song.id">
                 <div class="content">
                     <h1 class="name">{{song.name}}</h1>
@@ -29,6 +30,9 @@ export default {
     methods: {
         formatDetail (song) {
             return `${song.singer} · ${song.album}`
+        },
+        emitSong (song, index) {
+            this.$emit('select', song, index)
         }
     }
 }

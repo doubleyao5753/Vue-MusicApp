@@ -31,7 +31,8 @@
                 @scroll="getScrollY"
                 ref="scroll">
             <div class="song-list-wrapper">
-                <song-list :songs="songs"></song-list>
+                <song-list :songs="songs"
+                           @select="selectSong"></song-list>
             </div>
             <div class="loading-container"
                  v-show="!songs.length">
@@ -47,6 +48,7 @@ import SongList from 'base/song-list/song-list'
 import Scroll from 'base/scroll/scroll'
 import { prefixStyle } from 'common/js/dom'
 import Loading from 'base/loading/loading'
+import { mapActions } from 'vuex'
 
 const TOPBAR_HEIGHT = 40
 const transform = prefixStyle('transform')
@@ -98,7 +100,16 @@ export default {
         },
         backPage () {
             this.$router.back()
-        }
+        },
+        selectSong (item, index) {
+            this.selectPlay({
+                list: this.songs,
+                index
+            })
+        },
+        ...mapActions([
+            'selectPlay'
+        ])
     },
     watch: {
         // 监听scroll坐标变化的同时处理相关dom 核心: layer层和image层zindex的变化
