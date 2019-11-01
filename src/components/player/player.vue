@@ -43,8 +43,9 @@
                         <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
                     </div>
                     <div class="operators">
-                        <div class="icon i-left">
-                            <i class="icon-sequence"></i>
+                        <div class="icon i-left"
+                             @click="changeMode">
+                            <i :class="modeStyle"></i>
                         </div>
                         <div class="icon i-left"
                              :class="isDisable">
@@ -111,6 +112,7 @@ import progressCircle from 'base/progress-circle/progress-circle'
 import { mapGetters, mapMutations } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
+import { mode } from 'common/js/config'
 
 const transform = prefixStyle('transform')
 
@@ -139,6 +141,7 @@ export default {
             'playing',
             'currentIndex',
             'currentSong',
+            'playMode',
             'stableSong'
         ]),
         progressPercent () {
@@ -156,13 +159,17 @@ export default {
         },
         isDisable () {
             return this.songReady ? '' : 'disable'
+        },
+        modeStyle () {
+            return this.playMode === mode.sequence ? 'icon-sequence' : this.playMode === mode.loop ? 'icon-loop' : 'icon-random'
         }
     },
     methods: {
         ...mapMutations({
             setFullScreen: 'SET_FULL_SCREEN',
             setPlaying: 'SET_PLAYING_STATE',
-            setCurrentIndex: 'SET_CURRENT_INDEX'
+            setCurrentIndex: 'SET_CURRENT_INDEX',
+            setPlayMode: 'SET_PLAY_MODE'
         }),
         toggleFullScreen () {
             this.fullScreen ? this.setFullScreen(false) : this.setFullScreen(true)
@@ -213,6 +220,10 @@ export default {
         changeSongTime (newPercent) {
             this.$refs.audio.currentTime = this.currentSong.duration * newPercent
             if (!this.playing) this.togglePlaying()
+        },
+        changeMode () {
+            let mode = (this.playMode + 1) % 3  // Tips: 取余确保在012之间
+            this.setPlayMode(mode)
         },
         // 播放CD切换动画
         _getPosAndScale () {
@@ -282,7 +293,7 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 @import '~common/stylus/variable';
 @import '~common/stylus/mixin';
 

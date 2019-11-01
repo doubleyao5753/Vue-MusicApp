@@ -14,7 +14,7 @@ const state = {
     // 排序播放列表
     sequenceList: [],
     // 播放模式
-    playMode: mode.order,
+    playMode: mode.loop,
     // 当前歌曲索引
     currentIndex: -1,
     // 临时固定写死歌曲url
