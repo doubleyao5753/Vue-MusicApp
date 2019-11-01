@@ -37,7 +37,8 @@
                     <div class="progress-wrapper">
                         <span class="time time-l">{{formatTime(currentPlayTime)}}</span>
                         <div class="progress-bar-wrapper">
-                            <progress-bar :percent="progressPercent"></progress-bar>
+                            <progress-bar :percent="progressPercent"
+                                          @triggerProgress="changeSongTime"></progress-bar>
                         </div>
                         <span class="time time-r">{{formatTime(currentSong.duration)}}</span>
                     </div>
@@ -84,8 +85,12 @@
                        v-html="currentSong.singer"></p>
                 </div>
                 <div class="control">
-                    <i :class="playIconMini"
-                       @click.stop="togglePlaying"></i>
+                    <progress-circle :radius="32"
+                                     :percent="progressPercent">
+                        <i :class="playIconMini"
+                           class="icon-mini"
+                           @click.stop="togglePlaying"></i>
+                    </progress-circle>
                 </div>
                 <div class="control">
                     <i class="icon-playlist"></i>
@@ -102,6 +107,7 @@
 
 <script>
 import progressBar from 'base/progress-bar/progress-bar'
+import progressCircle from 'base/progress-circle/progress-circle'
 import { mapGetters, mapMutations } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
@@ -111,7 +117,8 @@ const transform = prefixStyle('transform')
 export default {
     name: 'Player',
     components: {
-        progressBar
+        progressBar,
+        progressCircle
     },
     data () {
         return {
@@ -202,6 +209,10 @@ export default {
             let sec = interval % 60
             sec = sec < 10 ? sec.toString().padStart(2, '0') : sec
             return min + ':' + sec
+        },
+        changeSongTime (newPercent) {
+            this.$refs.audio.currentTime = this.currentSong.duration * newPercent
+            if (!this.playing) this.togglePlaying()
         },
         // 播放CD切换动画
         _getPosAndScale () {
