@@ -37,6 +37,7 @@ export const selectPlay = function ({
   commit(types.SET_PLAYING_STATE, true)
 }
 
+// 全部随机播放Action
 export const randomPlay = function ({
   commit
 }, {

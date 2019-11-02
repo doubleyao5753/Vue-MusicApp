@@ -11,7 +11,7 @@ const state = {
   fullScreen: false,
   // 播放列表
   playList: [],
-  // 原始顺序播放列表
+  // 原始顺顺顺序播放列表
   sequenceList: [],
   // 播放模式
   playMode: mode.loop,
