@@ -11,7 +11,8 @@
              ref="bgImage">
             <div class="play-wrapper"
                  v-show="songs.length>0"
-                 ref="play">
+                 ref="play"
+                 @click="randomPlayAll">
                 <div class="play">
                     <i class="icon-play"></i>
                     <span class="text">随机播放全部</span>
@@ -107,8 +108,14 @@ export default {
                 index
             })
         },
+        randomPlayAll () {
+            this.randomPlay({
+                list: this.songs
+            })
+        },
         ...mapActions([
-            'selectPlay'
+            'selectPlay',
+            'randomPlay'
         ])
     },
     watch: {

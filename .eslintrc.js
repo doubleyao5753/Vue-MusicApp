@@ -25,9 +25,9 @@ module.exports = {
     'generator-star-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // 不检测后空行
+    // 不检测后空行f
     'eol-last': 0,
-    // 'space-before-function-paren': 0
+    'space-before-function-paren': 0,
 
     "no-extra-boolean-cast": 1, //多余的感叹号转布尔型
     "no-extra-semi": 1, //多余的分号
@@ -35,7 +35,7 @@ module.exports = {
     "no-empty": 1, //空代码块
 
     // 缩进配置
-    "indent": ["warn", 4],
+    "indent": ["off", 4],
     "overrides": [{
       "files": ["*.vue"],
       "rules": {

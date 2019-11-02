@@ -102,7 +102,8 @@
                :src="currentSong.url"
                @play="ready"
                @error='error'
-               @timeupdate="timeUpdate"></audio>
+               @timeupdate="timeUpdate"
+               @ended="end"></audio>
     </div>
 </template>
 
@@ -113,6 +114,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import { mode } from 'common/js/config'
+import { shuffle } from 'common/js/util'
 
 const transform = prefixStyle('transform')
 
@@ -138,6 +140,7 @@ export default {
         ...mapGetters([
             'fullScreen',
             'playList',
+            'sequenceList',
             'playing',
             'currentIndex',
             'currentSong',
@@ -169,6 +172,7 @@ export default {
             setFullScreen: 'SET_FULL_SCREEN',
             setPlaying: 'SET_PLAYING_STATE',
             setCurrentIndex: 'SET_CURRENT_INDEX',
+            setPlayList: 'SET_PLAY_LIST',
             setPlayMode: 'SET_PLAY_MODE'
         }),
         toggleFullScreen () {
@@ -222,8 +226,35 @@ export default {
             if (!this.playing) this.togglePlaying()
         },
         changeMode () {
-            let mode = (this.playMode + 1) % 3  // Tips: 取余确保在012之间
-            this.setPlayMode(mode)
+            let varyMode = (this.playMode + 1) % 3  // Tips: 取余确保在012之间
+            this.setPlayMode(varyMode)
+            let list = []
+            // 如果是随机模式，对播放列表执行洗牌算法
+            if (varyMode === mode.random) {
+                list = shuffle(this.sequenceList)
+            } else {
+                list = this.sequenceList
+            }
+            // 一旦playList被改变，那么由索引决定的当前歌曲一定会变，所以应该在之前重新设置索引
+            this._resetCurrentSong(list)
+            this.setPlayList(list)
+        },
+        _resetCurrentSong (list) {
+            let curIndex = list.findIndex((e) => {
+                return e.id === this.currentSong.id
+            })
+            this.setCurrentIndex(curIndex)
+        },
+        end () {
+            if (this.playMode === mode.loop) {
+                this.loop()
+            } else {
+                this.next()
+            }
+        },
+        loop () {
+            this.$refs.audio.currentTime = 0
+            this.$refs.audio.play()
         },
         // 播放CD切换动画
         _getPosAndScale () {
@@ -283,6 +314,12 @@ export default {
         }
     },
     watch: {
+        currentSong (newSong, oldSong) {
+            if (newSong.id === oldSong.id) return
+            this.$nextTick(() => {
+                this.$refs.audio.play()
+            })
+        },
         playing (newval) {
             const audio = this.$refs.audio
             this.$nextTick(() => {
