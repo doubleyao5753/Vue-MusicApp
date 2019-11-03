@@ -70,6 +70,28 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e);
         })
       });
+
+      apiRoutes.get('/api/getLyric', (req, res) => {
+        const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg';
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com/',
+            Origin: 'https://y.qq.com',
+          },
+          params: req.query
+        }).then((response) => {
+          var _res = response.data
+          if (typeof _res === 'string') {
+            var matches = _res.match(/^\w+\(({[^()]+})\)$/)
+            if (matches) {
+              _res = JSON.parse(matches[1])
+            }
+          }
+          res.json(_res)
+        }).catch((e) => {
+          console.log(e);
+        })
+      });
       app.use('/api', apiRoutes);
     },
   },
