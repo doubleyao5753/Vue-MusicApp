@@ -12,7 +12,7 @@ import {
 
 // 定义类
 export default class Song {
-  constructor({
+  constructor ({
     id,
     mid,
     name,
@@ -32,11 +32,19 @@ export default class Song {
     this.url = url
   }
 
-  getLyric() {
+  getLyric () {
+    if (this.lyric) {
+      return Promise.resolve(this.lyric)
+    }
+
     return new Promise((resolve, reject) => {
       getLyric(this.mid).then((res) => {
         if (res.retcode === ERR_OK) {
-          console.log(Base64.decode(res.lyric))
+          this.lyric = Base64.decode(res.lyric)
+          resolve(this.lyric)
+        } else {
+          // eslint-disable-next-line prefer-promise-reject-errors
+          reject('no lyric')
         }
       })
     })
@@ -44,7 +52,7 @@ export default class Song {
 }
 
 // 实例化歌曲这个类
-export function newSong(musicData) {
+export function newSong (musicData) {
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
@@ -57,7 +65,7 @@ export function newSong(musicData) {
   })
 }
 
-function formatSinger(singer) {
+function formatSinger (singer) {
   let res = []
   if (!singer) return ''
   singer.forEach((e) => {

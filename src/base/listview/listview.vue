@@ -164,7 +164,7 @@ export default {
                 let next = itemsHeight[i + 1]
                 if (newVal >= pre && newVal < next) {
                     this.current = i
-                    this.approach = next - newVal  // 计算到上限的距离（不断递减）
+                    this.approach = next - newVal // 计算到上限的距离（不断递减）
                 } else if (newVal > next) {
                     // 滚动到底部的底部时：newVal大于next上限
                     this.current = itemsHeight.length - 2

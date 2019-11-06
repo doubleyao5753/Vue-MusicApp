@@ -3,7 +3,7 @@ import {
 } from './config'
 import axios from 'axios'
 
-export function getLyric(mid) {
+export function getLyric (mid) {
   const url = '/api/getLyric'
 
   const data = Object.assign({}, recUrlParams, {

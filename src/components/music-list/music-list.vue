@@ -113,10 +113,7 @@ export default {
                 list: this.songs
             })
         },
-        ...mapActions([
-            'selectPlay',
-            'randomPlay'
-        ])
+        ...mapActions(['selectPlay', 'randomPlay'])
     },
     watch: {
         // 监听scroll坐标变化的同时处理相关dom 核心: layer层和image层zindex的变化
@@ -153,7 +150,6 @@ export default {
         }
     }
 }
-
 </script>
 
 <style lang="stylus" scoped>

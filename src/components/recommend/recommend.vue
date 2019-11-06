@@ -87,7 +87,8 @@ export default {
             if (!this.flag) {
                 // 一旦轮播图高度被撑开，就刷新scroll
                 this.$refs.scroll.refresh()
-                this.flag = true  // 确保只执行一次
+                // 确保只执行一次
+                this.flag = true
             }
         }
 

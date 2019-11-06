@@ -9,7 +9,7 @@ import {
 } from '../common/js/util'
 
 // 从随机列表根据id找到当前播放歌曲的索引
-function randomListIndex(randomList, currentSong) {
+function randomListIndex (randomList, currentSong) {
   return randomList.findIndex((e) => {
     return e.id === currentSong.id
   })
