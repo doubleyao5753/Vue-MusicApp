@@ -306,6 +306,7 @@ export default {
         loop () {
             this.$refs.audio.currentTime = 0
             this.$refs.audio.play()
+            if (this.currentLyric) this.currentLyric.seek(0)
         },
         _getCurrentLyric () {
             this.currentSong.getLyric().then((lyric) => {
@@ -314,6 +315,7 @@ export default {
             }).catch(() => {
                 this.currentLyric = null
                 this.currentLine = 0
+                this.playingLyric = ''
             })
         },
         lyricHandler ({ lineNum, txt }) {
@@ -388,6 +390,10 @@ export default {
     watch: {
         currentSong (newSong, oldSong) {
             if (newSong.id === oldSong.id) return
+            if (this.currentLyric) {
+                // 解决歌曲切换后歌词乱跳
+                this.currentLyric.stop()
+            }
             this.$nextTick(() => {
                 this.$refs.audio.play()
                 this._getCurrentLyric()

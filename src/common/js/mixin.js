@@ -8,7 +8,7 @@ export const playListMixin = {
       'playList'
     ])
   },
-  created () {
+  mounted () {
     this.handlePlayList(this.playList)
   },
   activated () {
