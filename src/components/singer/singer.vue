@@ -1,7 +1,9 @@
 <template>
-    <div class="singer">
+    <div class="singer"
+         ref="singer">
         <list-view :singerData='singerList'
-                   @picked="pickedSinger"></list-view>
+                   @picked="pickedSinger"
+                   ref="listView"></list-view>
         <div class="loading-container"
              v-show="!singerList.length">
             <loading></loading>
@@ -19,11 +21,13 @@ import { ERR_OK } from 'api/config'
 import Singer from 'common/js/singer.js'
 import { mapMutations } from 'vuex'
 import Loading from 'base/loading/loading'
+import { playListMixin } from 'common/js/mixin'
 
 const HOT_SINGER = '热门歌手'
 const HOT_SINGER_LEN = 10
 export default {
     name: 'Singer',
+    mixins: [playListMixin],
     components: {
         ListView,
         BScroll,
@@ -40,6 +44,11 @@ export default {
         // }, 20)
     },
     methods: {
+        handlePlayList (playList) {
+            const bottomDis = playList.length > 0 ? '60px' : ''
+            this.$refs.singer.style.bottom = bottomDis
+            this.$refs.listView.refresh()
+        },
         pickedSinger (singer) {
             this.$router.push({
                 path: `/singer/${singer.id}`

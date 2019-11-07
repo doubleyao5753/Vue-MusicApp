@@ -50,6 +50,7 @@ import Scroll from 'base/scroll/scroll'
 import { prefixStyle } from 'common/js/dom'
 import Loading from 'base/loading/loading'
 import { mapActions } from 'vuex'
+import { playListMixin } from 'common/js/mixin'
 
 const TOPBAR_HEIGHT = 40
 const transform = prefixStyle('transform')
@@ -69,6 +70,7 @@ export default {
             default: () => []
         }
     },
+    mixins: [playListMixin],
     components: {
         SongList,
         Scroll,
@@ -112,6 +114,11 @@ export default {
             this.randomPlay({
                 list: this.songs
             })
+        },
+        handlePlayList (playList) {
+            const bottomDis = playList.length > 0 ? '60px' : ''
+            this.$refs.scroll.$el.style.bottom = bottomDis
+            this.$refs.scroll.refresh()
         },
         ...mapActions(['selectPlay', 'randomPlay'])
     },

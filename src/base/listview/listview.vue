@@ -140,6 +140,9 @@ export default {
         // 点击了谁，向外派发一个事件将其传出
         pickedItem (i) {
             this.$emit('picked', i)
+        },
+        refresh () {
+            this.$refs.listView.refresh()
         }
     },
     watch: {

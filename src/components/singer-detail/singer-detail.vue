@@ -2,7 +2,8 @@
     <transition name="slide">
         <music-list :title="title"
                     :bg-image="bgImage"
-                    :songs="songs"></music-list>
+                    :songs="songs"
+                    ref="musicList"></music-list>
     </transition>
 </template>
 

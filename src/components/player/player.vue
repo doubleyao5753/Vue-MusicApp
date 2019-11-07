@@ -33,6 +33,9 @@
                                      :src="currentSong.image">
                             </div>
                         </div>
+                        <div class="playing-lyric-wrapper">
+                            <div class="playing-lyric">{{playingLyric}}</div>
+                        </div>
                     </div>
                     <scroll class="middle-r"
                             :data="currentLyric && currentLyric.lines"
@@ -50,6 +53,10 @@
                     </scroll>
                 </div>
                 <div class="bottom">
+                    <!-- <div class="dot-wrapper">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div> -->
                     <div class="progress-wrapper">
                         <span class="time time-l">{{formatTime(currentPlayTime)}}</span>
                         <div class="progress-bar-wrapper">
@@ -149,7 +156,8 @@ export default {
             currentPlayTime: 0,
             currentLyric: null,
             currentLine: 0,
-            showLyric: false
+            showLyric: false,
+            playingLyric: ''
         }
     },
     mounted () {
@@ -209,6 +217,7 @@ export default {
         togglePlaying () {
             if (!this.songReady) return
             this.setPlaying(!this.playing)
+            if (this.currentLyric) this.currentLyric.togglePlay()
         },
         toggleShowLyric () {
             this.showLyric = !this.showLyric
@@ -222,24 +231,33 @@ export default {
         },
         prev () {
             if (!this.songReady) return
-            let index = this.currentIndex - 1
-            // 到第一首歌时上一曲
-            if (index === -1) {
-                index = this.playList.length - 1
+            if (this.playList.length === 1) {
+                this.loop()
+            } else {
+                let index = this.currentIndex - 1
+                // 到第一首歌时上一曲
+                if (index === -1) {
+                    index = this.playList.length - 1
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) this.togglePlaying()
             }
-            this.setCurrentIndex(index)
-            if (!this.playing) this.togglePlaying()
             this.songReady = false
         },
         next () {
             if (!this.songReady) return
-            let index = this.currentIndex + 1
-            // 到最后一首歌时下一曲
-            if (index === this.playList.length) {
-                index = 0
+            if (this.playList.length === 1) {
+                // 以防播放列表里面只有一首歌
+                this.loop()
+            } else {
+                let index = this.currentIndex + 1
+                // 到最后一首歌时下一曲
+                if (index === this.playList.length) {
+                    index = 0
+                }
+                this.setCurrentIndex(index)
+                if (!this.playing) this.togglePlaying()
             }
-            this.setCurrentIndex(index)
-            if (!this.playing) this.togglePlaying()
             this.songReady = false
         },
         timeUpdate (audio) {
@@ -256,6 +274,7 @@ export default {
             this.$refs.audio.currentTime =
                 this.currentSong.duration * newPercent
             if (!this.playing) this.togglePlaying()
+            if (this.currentLyric) this.currentLyric.seek(this.$refs.audio.currentTime * 1000)
         },
         changeMode () {
             let varyMode = (this.playMode + 1) % 3 // Tips: 取余确保在012之间
@@ -306,8 +325,9 @@ export default {
             } else {
                 this.$refs.lyricScroll.scrollTo(0, 0, 1000)
             }
+            this.playingLyric = txt
         },
-        // 播放CD切换动画
+        // 大小CD切换动画
         _getPosAndScale () {
             // SMALL CD
             const targetWidth = 40
@@ -460,6 +480,7 @@ export default {
                 width: 100%;
                 height: 0;
                 padding-top: 80%;
+                transition: all 0.5s;
 
                 .cd-wrapper {
                     position: absolute;
@@ -629,7 +650,7 @@ export default {
             }
         }
 
-        &.normal-enter-avtive, &.normal-leave-active {
+        &.normal-enter-active, &.normal-leave-active {
             transition: all 0.5s;
 
             .top, .bottom {

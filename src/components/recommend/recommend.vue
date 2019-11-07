@@ -1,5 +1,6 @@
 <template>
-    <div class="recommend">
+    <div class="recommend"
+         ref="recommend">
         <scroll class="recommend-cotent"
                 ref="scroll"
                 :data="songList">
@@ -52,9 +53,12 @@ import { ERR_OK } from 'api/config'
 import Slider from 'base/slider/slider'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import { playListMixin } from 'common/js/mixin'
+
 export default {
     name: 'Recommend',
     components: { Slider, Scroll, Loading },
+    mixins: [playListMixin],
     data () {
         return {
             sliderData: [],
@@ -90,8 +94,12 @@ export default {
                 // 确保只执行一次
                 this.flag = true
             }
+        },
+        handlePlayList (playList) {
+            const bottomDis = playList.length > 0 ? '60px' : ''
+            this.$refs.recommend.style.bottom = bottomDis
+            this.$refs.scroll.refresh()
         }
-
     }
 }
 </script>

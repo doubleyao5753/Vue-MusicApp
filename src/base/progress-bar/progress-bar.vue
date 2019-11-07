@@ -57,7 +57,9 @@ export default {
             this._triggerPercent()
         },
         _triggerPercent () {
-            const touchPercent = this.$refs.progress.clientWidth / this.touch.barWidth
+            // ! 这个函数在哪里被调用？这里面是拿不到this.touch的我日
+            const barWidth = this.$refs.progressBar.clientWidth - PROGRESSBTN
+            const touchPercent = this.$refs.progress.clientWidth / barWidth
             this.$emit('triggerProgress', touchPercent)
         },
         _offsetExecute (offset) {
