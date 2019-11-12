@@ -25,7 +25,8 @@
                     <ul>
                         <li class="item"
                             v-for="item in songList"
-                            :key="item.dissid">
+                            :key="item.dissid"
+                            @click="jumpToDetail(item)">
                             <div class="icon">
                                 <img v-lazy="item.imgurl"
                                      width="60"
@@ -44,6 +45,8 @@
                 <loading :text="'不要着急，老子还在飞机上...'"></loading>
             </div>
         </scroll>
+        <!-- 子路由歌单详情组件渲染出口 -->
+        <router-view></router-view>
     </div>
 </template>
 
@@ -54,6 +57,7 @@ import Slider from 'base/slider/slider'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import { playListMixin } from 'common/js/mixin'
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'Recommend',
@@ -99,7 +103,16 @@ export default {
             const bottomDis = playList.length > 0 ? '60px' : ''
             this.$refs.recommend.style.bottom = bottomDis
             this.$refs.scroll.refresh()
-        }
+        },
+        jumpToDetail (item) {
+            this.setGedan(item)
+            this.$router.push({
+                path: `/recommend/${item.dissid}`
+            })
+        },
+        ...mapMutations({
+            setGedan: 'SET_GEDAN'
+        })
     }
 }
 </script>

@@ -18,7 +18,9 @@ const state = {
   // 当前歌曲索引
   currentIndex: -1,
   // 临时固定写死歌曲url
-  stableSong: 'https://www.joy127.com/url/1769.mp3'
+  stableSong: 'https://www.joy127.com/url/1769.mp3',
+  // 歌单详情
+  gedan: {}
 }
 
 export default state

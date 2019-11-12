@@ -7,7 +7,9 @@ export const sequenceList = state => state.sequenceList
 export const playMode = state => state.playMode
 export const currentIndex = state => state.currentIndex
 export const currentSong = (state) => {
-    return state.playList[state.currentIndex] || {}
+  return state.playList[state.currentIndex] || {}
 }
+
+export const gedan = state => state.gedan
 
 export const stableSong = state => state.stableSong

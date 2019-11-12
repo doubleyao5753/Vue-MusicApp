@@ -7,6 +7,7 @@ import Search from 'components/search/search'
 
 // 子路由
 import SingerDetail from 'components/singer-detail/singer-detail'
+import GedanDetail from 'components/gedan-detail/gedan-detail'
 
 Vue.use(Router)
 
@@ -18,7 +19,11 @@ export default new Router({
     {
       path: '/recommend',
       name: 'Recommend',
-      component: Recommend
+      component: Recommend,
+      children: [{
+        path: ':id',
+        component: GedanDetail
+      }]
     },
     {
       path: '/singer',

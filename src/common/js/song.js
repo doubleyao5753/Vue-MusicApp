@@ -73,3 +73,17 @@ function formatSinger (singer) {
   })
   return res.join('/')
 }
+
+export function newSong2 (musicData2) {
+  return new Song({
+    id: musicData2.id,
+    mid: musicData2.mid,
+    name: musicData2.name,
+    singer: formatSinger(musicData2.singer),
+    album: musicData2.album.name,
+    duration: musicData2.interval,
+    image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData2.album.mid}.jpg?max_age=2592000`,
+    url: `http://ws.stream.qqmusic.qq.com/${musicData2.id}.m4a?fromtag=46`
+    // url: `http://stream0.qqmusic.qq.com/${musicData2.id}.wma`
+  })
+}
