@@ -11,5 +11,6 @@ export const currentSong = (state) => {
 }
 
 export const gedan = state => state.gedan
+export const topList = state => state.topList
 
 export const stableSong = state => state.stableSong

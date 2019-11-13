@@ -24,6 +24,9 @@ const mutations = {
   },
   [types.SET_GEDAN] (state, payload) {
     state.gedan = payload
+  },
+  [types.SET_TOP_LIST] (state, payload) {
+    state.gedan = payload
   }
 }
 

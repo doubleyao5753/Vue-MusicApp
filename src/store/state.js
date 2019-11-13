@@ -20,7 +20,9 @@ const state = {
   // 临时固定写死歌曲url
   stableSong: 'https://www.joy127.com/url/1769.mp3',
   // 歌单详情
-  gedan: {}
+  gedan: {},
+  // 排行榜歌曲列表
+  topList: {}
 }
 
 export default state

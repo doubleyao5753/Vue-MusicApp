@@ -8,6 +8,7 @@ import Search from 'components/search/search'
 // 子路由
 import SingerDetail from 'components/singer-detail/singer-detail'
 import GedanDetail from 'components/gedan-detail/gedan-detail'
+import RankDetail from 'components/rank-detail/rank-detail'
 
 Vue.use(Router)
 
@@ -37,7 +38,11 @@ export default new Router({
     {
       path: '/rank',
       name: 'Rank',
-      component: Rank
+      component: Rank,
+      children: [{
+        path: ':id',
+        component: RankDetail
+      }]
     },
     {
       path: '/search',
