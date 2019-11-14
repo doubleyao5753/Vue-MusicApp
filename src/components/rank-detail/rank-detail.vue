@@ -1,12 +1,18 @@
 <template>
     <transition name="slide">
-        <music-list></music-list>
+        <music-list :songs="songs"
+                    :title="title"
+                    :bg-image="bgImage"
+                    :rank="true"></music-list>
     </transition>
 </template>
 
 <script>
 import MusicList from 'components/music-list/music-list'
 import { mapGetters } from 'vuex'
+import { newSong } from 'common/js/song'
+import { getTopList } from 'api/rank'
+import { ERR_OK } from 'api/config'
 
 export default {
     name: 'GedanDetail',
@@ -14,7 +20,7 @@ export default {
         MusicList
     },
     created () {
-        // this._getTopList()
+        this._getTopList()
     },
     data () {
         return {
@@ -23,10 +29,13 @@ export default {
     },
     computed: {
         title () {
-            return this.gedan.dissname
+            return this.topList.topTitle
         },
         bgImage () {
-            return this.gedan.imgurl
+            if (this.songs.length) {
+                return this.songs[0].image
+            }
+            return this.topList.picUrl
         },
         ...mapGetters([
             'topList'
@@ -34,18 +43,24 @@ export default {
     },
     methods: {
         _getTopList () {
-            console.log(this.topList)
-            if (!this.topList.dissid) {
+            // console.log(this.topList)
+            if (!this.topList.id) {
                 this.$router.push({
-                    path: '/recommend'
+                    path: '/rank'
                 })
             }
+            getTopList(this.topList.id).then((res) => {
+                if (res.code === ERR_OK) {
+                    this.songs = this._normalizeSong(res.songlist)
+                }
+            })
         },
         _normalizeSong (list) {
             let res = []
             list.forEach((e) => {
-                if (e.id && e.album) {
-                    res.push(newSong2(e))
+                let temp = e.data
+                if (temp.songid && temp.albummid) {
+                    res.push(newSong(temp))
                 }
             })
             return res

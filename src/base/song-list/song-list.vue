@@ -5,6 +5,11 @@
                 v-for="(song,index) in songs"
                 @click="emitSong(song,index)"
                 :key="song.id">
+                <div class="rank"
+                     v-show="rank">
+                    <span :class="getRankCls(index)"
+                          v-text="getRankNum(index)"></span>
+                </div>
                 <div class="content">
                     <h1 class="name">{{song.name}}</h1>
                     <p class="detail">{{formatDetail(song)}}</p>
@@ -19,8 +24,12 @@ export default {
     name: 'SongList',
     props: {
         songs: {
-            types: Array,
+            type: Array,
             default: () => []
+        },
+        rank: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -33,6 +42,18 @@ export default {
         },
         emitSong (song, index) {
             this.$emit('select', song, index)
+        },
+        getRankCls (index) {
+            if (index < 3) {
+                return `icon icon${index}`
+            } else {
+                return 'text'
+            }
+        },
+        getRankNum (index) {
+            if (index >= 3) {
+                return index + 1
+            }
         }
     }
 }
@@ -44,9 +65,9 @@ export default {
 
 .song-list {
     .item {
-        box-sizing: border-box;
         display: flex;
         align-items: center;
+        box-sizing: border-box;
         height: 64px;
         font-size: $font-size-medium;
 
@@ -64,6 +85,38 @@ export default {
                 no-wrap();
                 margin-top: 4px;
                 color: $color-text-d;
+            }
+        }
+
+        .rank {
+            flex: 0 0 25px;
+            width: 25px;
+            margin-right: 30px;
+            text-align: center;
+            position: static;
+
+            .icon {
+                display: inline-block;
+                width: 25px;
+                height: 24px;
+                background-size: 25px 24px;
+
+                &.icon0 {
+                    bg-image('first');
+                }
+
+                &.icon1 {
+                    bg-image('second');
+                }
+
+                &.icon2 {
+                    bg-image('third');
+                }
+            }
+
+            .text {
+                color: $color-theme;
+                font-size: $font-size-large;
             }
         }
     }

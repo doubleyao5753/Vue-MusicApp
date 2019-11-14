@@ -71,10 +71,10 @@ export default {
             this.$refs.scroll.refresh()
         },
         jumpToDetail (item) {
-            this.setTopList(item)
             this.$router.push({
                 path: `/rank/${item.id}`
             })
+            this.setTopList(item)
         },
         ...mapMutations({
             setTopList: 'SET_TOP_LIST'
