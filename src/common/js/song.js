@@ -65,7 +65,7 @@ export function newSong (musicData) {
   })
 }
 
-function formatSinger (singer) {
+export function formatSinger (singer) {
   let res = []
   if (!singer) return ''
   singer.forEach((e) => {

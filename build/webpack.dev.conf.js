@@ -117,6 +117,29 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e);
         })
       });
+
+      // 歌曲搜索框输入搜索时数据的获取
+      apiRoutes.get('/api/getInputSearch', (req, res) => {
+        const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp';
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com/',
+            Origin: 'https://y.qq.com',
+            // host: 'c.y.qq.com'
+          },
+          params: req.query //这是请求的query
+        }).then((response) => {
+          var _res = response.data
+          if (typeof _res === 'string') {
+            //   此处应该使用正则抽取
+            var temp = _res.substring(9, _res.length - 1)
+            _res = JSON.parse(temp)
+          }
+          res.json(_res)
+        }).catch((e) => {
+          console.log(e);
+        })
+      });
       app.use('/api', apiRoutes);
     },
   },
