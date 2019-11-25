@@ -30,7 +30,6 @@
 <script>
 import SearchBox from 'base/search-box/search-box'
 import Suggest from 'components/suggest/suggest'
-import Scroll from 'base/scroll/scroll'
 import { getHotWords } from 'api/search'
 import { ERR_OK } from 'api/config'
 
@@ -38,8 +37,7 @@ export default {
     name: 'Search',
     components: {
         SearchBox,
-        Suggest,
-        Scroll
+        Suggest
     },
     data () {
         return {

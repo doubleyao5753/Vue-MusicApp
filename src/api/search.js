@@ -17,7 +17,7 @@ export function getHotWords () {
   return jsonp(url, params, recJsonpCallback)
 }
 
-export function getInputSearch (query, page, zhida) {
+export function getInputSearch (query, page, zhida, perpage) {
   //   const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
   const url = '/api/getInputSearch'
 
@@ -30,7 +30,8 @@ export function getInputSearch (query, page, zhida) {
     flag: 1,
     ie: 'utf-8',
     sem: 1,
-    n: 20,
+    perpage,
+    n: perpage,
     aggr: 0,
     remoteplace: 'txt.mqq.all',
     uin: 0,
