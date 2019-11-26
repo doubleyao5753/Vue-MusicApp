@@ -7,7 +7,8 @@
         <div class="suggest-list">
             <div class="suggest-item"
                  v-for="item in result"
-                 :key="item.id">
+                 :key="item.id"
+                 @click="jumpToSinger(item)">
                 <div class="icon">
                     <i :class="singerOrSong(item)"></i>
                 </div>
@@ -27,6 +28,8 @@ import { ERR_OK } from 'api/config'
 import { newSong } from 'common/js/song'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
+import Singer from 'common/js/singer'
+import { mapMutations } from 'vuex'
 
 const TYPE_SINGER = 'singer'
 const PER_PAGE = 20
@@ -110,6 +113,20 @@ export default {
                 this.hasMore = false
             }
         },
+        jumpToSinger (data) {
+            if (data.type && data.type === TYPE_SINGER) {
+                const singer = new Singer({
+                    id: data.singermid,
+                    name: data.singername
+                })
+
+                this.$router.push({
+                    path: `/search/${singer.id}`
+                })
+
+                this.setSinger(singer)
+            }
+        },
         singerOrSong (item) {
             if (item.type && item.type === TYPE_SINGER) {
                 return 'icon-mine'
@@ -123,7 +140,10 @@ export default {
             } else {
                 return `${item.name} - ${item.singer}`
             }
-        }
+        },
+        ...mapMutations({
+            setSinger: 'SET_SINGER'
+        })
     },
     watch: {
         query () {

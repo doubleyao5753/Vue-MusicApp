@@ -4,7 +4,7 @@
         <input type="text"
                class="box"
                :placeholder="placeholder"
-               v-model="query">
+               v-model="query" />
         <i class="icon-dismiss"
            v-show="query"
            @click="clear"></i>
@@ -34,7 +34,7 @@ export default {
         }
     },
     created () {
-        this.$watch('query', (newQuery) => {
+        this.$watch('query', newQuery => {
             this.$emit('queryChange', newQuery)
         })
     }
